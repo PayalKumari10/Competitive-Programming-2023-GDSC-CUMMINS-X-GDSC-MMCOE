@@ -1,0 +1,41 @@
+public class ShortestSubarrayWithSumK {
+
+    public static int shortestSubarrayWithSumK(int[] nums, int k) {
+        int n = nums.length;
+        int[] prefixSum = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        }
+
+        int minLen = n + 1;
+        java.util.ArrayDeque<Integer> deque = new java.util.ArrayDeque<>();
+
+        for (int i = 0; i <= n; i++) {
+            while (!deque.isEmpty() && prefixSum[i] - prefixSum[deque.peek()] >= k) {
+                minLen = Math.min(minLen, i - deque.poll());
+            }
+
+            while (!deque.isEmpty() && prefixSum[i] <= prefixSum[deque.peek()]) {
+                deque.pop();
+            }
+
+            deque.add(i);
+        }
+
+        return minLen <= n ? minLen : -1;
+    }
+
+    public static void main(String[] args) {
+        int[] nums1 = {1};
+        int k1 = 1;
+        System.out.println("Example 1 Output: " + shortestSubarrayWithSumK(nums1, k1));
+
+        int[] nums2 = {1, 2};
+        int k2 = 4;
+        System.out.println("Example 2 Output: " + shortestSubarrayWithSumK(nums2, k2));
+
+        int[] nums3 = {2, -1, 2};
+        int k3 = 3;
+        System.out.println("Example 3 Output: " + shortestSubarrayWithSumK(nums3, k3));
+    }
+}
