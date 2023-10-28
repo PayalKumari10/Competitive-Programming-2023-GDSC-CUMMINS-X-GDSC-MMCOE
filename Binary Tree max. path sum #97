@@ -1,0 +1,46 @@
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+}
+
+public class MaximumPathSum {
+    int maxPathSum = Integer.MIN_VALUE;
+
+    public int maxPathSum(TreeNode root) {
+        findMaxPathSum(root);
+        return maxPathSum;
+    }
+
+    private int findMaxPathSum(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        // Get the maximum path sum in the left and right subtrees
+        int leftMax = Math.max(0, findMaxPathSum(node.left));
+        int rightMax = Math.max(0, findMaxPathSum(node.right));
+
+        // Update the maximum path sum by considering the current node as the root
+        int currentPathSum = node.val + leftMax + rightMax;
+        maxPathSum = Math.max(maxPathSum, currentPathSum);
+
+        // Return the maximum path sum that can be extended from the current node
+        return node.val + Math.max(leftMax, rightMax);
+    }
+
+    public static void main(String[] args) {
+        // Create the example binary tree
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+
+        MaximumPathSum solution = new MaximumPathSum();
+        int maxPathSum = solution.maxPathSum(root);
+        System.out.println("Maximum Path Sum: " + maxPathSum);
+    }
+}
